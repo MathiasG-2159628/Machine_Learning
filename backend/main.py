@@ -10,4 +10,4 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"],
 
 @app.get("/")
 def read_root():
-    return "hello"
+    return "HALLO"
