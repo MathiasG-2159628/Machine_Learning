@@ -3,7 +3,6 @@ import pandas as pd
 from keras import models
 import cv2
 from pydantic import BaseModel
-
 class Image(BaseModel):
     data: str
 

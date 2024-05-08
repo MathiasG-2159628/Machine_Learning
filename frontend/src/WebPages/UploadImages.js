@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 
 async function postImage(image) {
   try {
+    
     const url = 'http://127.0.0.1:8000';
     console.log(image)
     const res = await fetch(url, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({image}),
+      body: JSON.stringify({data: image}),
     });
 
     const jsonData = await res.json();
