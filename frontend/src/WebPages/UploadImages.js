@@ -1,5 +1,24 @@
 import React, { useState } from 'react';
 
+async function postImage(image) {
+  try {
+    const url = 'http://127.0.0.1:8000';
+    console.log(image)
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({image}),
+    });
+
+    const jsonData = await res.json();
+    return jsonData;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const Upload_Image = () => {
   const [image, setImage] = useState(null);
   const [scanResult, setScanResult] = useState(null);
@@ -20,6 +39,7 @@ export const Upload_Image = () => {
   // Function to handle scan button click
   const handleScanClick = () => {
     // Mocking scan result for demonstration
+    var prediction = postImage(image);
     const result = "The model says the image is 100% Denzell!";
     setScanResult(result);
   };
