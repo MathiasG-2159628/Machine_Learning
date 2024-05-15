@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from keras.models import Sequential
 from keras.layers import Conv2D, MaxPool2D, Flatten, Dense, Dropout, Lambda, BatchNormalization
 from tensorflow_addons.layers import WeightNormalization
+from keras import models
 import tensorflow as tf
 import cv2
 from pydantic import BaseModel
@@ -38,39 +39,46 @@ def read_root(img: Image):
     # Decode the image
     image = cv2.imdecode(numpy_array, cv2.IMREAD_COLOR)
     image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    image_resized = cv2.resize(image_gray, (512, 512))
+    image_resized = cv2.resize(image_gray, (384, 384))
     image_normalized = cv2.normalize(image_resized, None, 0, 1.0, cv2.NORM_MINMAX, dtype=cv2.CV_32F)
 
 
     model = Sequential()
-    model.add(Lambda(lambda x: tf.cast(x, tf.float32), input_shape=(512, 512, 1)))
+    model.add(Lambda(lambda x: tf.cast(x, tf.float32), input_shape=(384, 384, 1)))
 
-    model.add(WeightNormalization(Conv2D(16, (3, 3), padding='same', activation='relu', input_shape=(512, 512, 1))))
+    model.add(WeightNormalization(Conv2D(32, (3, 3), padding='same', activation='relu', input_shape=(384, 384, 1))))
     model.add(BatchNormalization())
     model.add(MaxPool2D(pool_size=(2, 2)))
-    model.add(Dropout(0.25))
-
-    model.add(WeightNormalization(Conv2D(32, (3, 3), padding='same', activation='relu')))
-    model.add(MaxPool2D(pool_size=(2, 2)))
-    model.add(Dropout(0.25))
+    # model.add(Dropout(0.2))
 
     model.add(WeightNormalization(Conv2D(64, (3, 3), padding='same', activation='relu')))
+    model.add(BatchNormalization())
     model.add(MaxPool2D(pool_size=(2, 2)))
-    model.add(Dropout(0.25))
+    # model.add(Dropout(0.2))
+
+    model.add(WeightNormalization(Conv2D(64, (3, 3), padding='same', activation='relu')))
+    model.add(BatchNormalization())
+    model.add(MaxPool2D(pool_size=(2, 2)))
+    # model.add(Dropout(0.2))
 
 
 
     model.add(Flatten())
-    model.add(Dense(128, activation='relu'))
-    model.add(Dropout(0.25))
-    model.add(Dense(80, activation='relu'))
+    model.add(Dense(384, activation='relu'))
     model.add(Dropout(0.2))
+    #model.add(Dense(128, activation='relu'))
+    # model.add(Dropout(0.2))
+
 
 
     model.add(Dense(4, activation = "softmax"))
-    model.load_weights('./model.h5')
+
+    # model = models.load_model('./model.h5')
+    # model.load_weights('./model.h5')
     
-    prediction = model.predict(image_normalized.reshape(1, 512, 512, 1))
+    prediction = model.predict(image_normalized.reshape(1, 384, 384, 1))
+    print(prediction)
+    #prediction = model.predict(image_normalized)
     prediction_dict = {
     'screwdriver': float(prediction[0][0]),
     'combwrench': float(prediction[0][1]),
