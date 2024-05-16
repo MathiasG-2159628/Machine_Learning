@@ -6,7 +6,7 @@ export function Purpose_Authors() {
                     <div className="card-body">
                         <h1 className="card-title text-center my-4">Purpose:</h1>
                         <p className="card-text text-justify lead mb-4">The purpose of this tool is to discern which tool is in a given image in order to assist industry workers.<br></br>
-                            The tools our model can recognize are a screwdriver, hammer, combwrench and screwdriver.<br></br>
+                            The tools our model can recognize are a screwdriver, hammer, combwrench and wrench.<br></br>
                             This is a project made for educational purposes and should not be used in a real life environment.</p>
                     </div>
                 </div>
