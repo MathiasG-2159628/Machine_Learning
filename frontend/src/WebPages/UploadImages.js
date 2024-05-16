@@ -23,6 +23,7 @@ async function postImage(image) {
 export const Upload_Image = () => {
   const [image, setImage] = useState(null);
   const [scanResult, setScanResult] = useState(null);
+  const [moreDetails, setMoreDetails] = useState(null);
 
   // Function to handle file upload
   const handleUpload = (event) => {
@@ -31,6 +32,8 @@ export const Upload_Image = () => {
 
     reader.onloadend = () => {
         setImage(reader.result);
+        setScanResult(null);
+        setMoreDetails(null);
     };
 
     if (file) {
@@ -43,27 +46,34 @@ export const Upload_Image = () => {
     postImage(image).then(function(result){
       console.log(result);
       var max = 0
+      var details = ''
       var tool = ''
       for (var key in result) {
         if (result[key] > max) {
           max = result[key]
           tool = key
         }
+         details += key + ': ' + (result[key] * 100).toFixed(2) + '%'
+         if(key !== 'wrench') {
+           details += '<br></br>'
+         }
       }
       var output = 'The model thinks the image is a ' + tool + ' with ' + (max * 100).toFixed(2) + '% confidence.'
       setScanResult(output);
+      setMoreDetails(details);
+      console.log(details)
     });
   };
 
   return (
     <div className="container mt-2">
-        <h2 className='mb-4'>Image Recognition Model:</h2>
         <div className="row">
             <div className="col-12">
             <div className="card">
                 <div className="card-header">
+                <h1 className='my-4'>Image Recognition Model:</h1>
                 {image && (
-                    <img src={image} alt="Uploaded" style={{ maxWidth: '512px', maxHeight: '512px', minWidth: '512px', minHeight: '512px'}}/>
+                    <img src={image} className='mb-4' alt="Uploaded image" style={{ maxWidth: '384px', maxHeight: '384px', minWidth: '384px', minHeight: '384px'}}/>
                 )}
                 </div>
                 <div className="card-body">
@@ -74,10 +84,20 @@ export const Upload_Image = () => {
                 </div>
                 <div className="card-body d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '100%' }}>
                     <div className="d-flex align-items-center justify-content-center h-100">
-                        <button id="analyse_button" className="btn btn-secondary btn-lg mt-1" onClick={handleScanClick} hidden={image == null ? true : false} style={{ fontSize: '1.5rem', padding: '15px 30px' }}>
-                        Analyse Image
-                        </button>
-                        {scanResult && <h2 className="mt-4 ms-4 pb-3">{scanResult}</h2>}
+                      <button id="analyse_button" className="btn btn-secondary btn-md mt-1" onClick={handleScanClick} hidden={image == null ? true : false} style={{ fontSize: '1.5rem', padding: '15px 30px' }}>
+                      Analyse Image
+                      </button>
+                      {scanResult && <h4 className="mt-4 mx-4 pb-3">{scanResult}</h4>}
+                      {moreDetails && 
+                      <div className='mt-3'>
+                        <p className="d-inline-flex gap-1">
+                          <a type="button" data-bs-toggle="collapse" data-bs-target="#moreDetails" aria-expanded="false" aria-controls="moreDetails">More details</a>                    
+                        </p>
+                        <div className="collapse" id="moreDetails">
+                          <div className="card card-body mt-2 mx-1" dangerouslySetInnerHTML={{ __html: moreDetails }}></div>
+                        </div>
+                      </div>
+                      } 
                     </div>
                 </div>
             </div>

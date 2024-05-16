@@ -30,7 +30,7 @@ function App() {
             <li className="nav-item me-4">
               <button className="nav-link btn btn-outline-light" 
               onClick={() =>{setActiveComponent(<Upload_Image/>)}}
-              >Upload Image</button>
+              >Image recognition model</button>
             </li>
             <li className="nav-item me-4">
               <button className="nav-link btn btn-outline-light" 
