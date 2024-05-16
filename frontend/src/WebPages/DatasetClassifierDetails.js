@@ -15,7 +15,8 @@ export function Dataset_ClassifierDetails() {
                     These images have been labeled with the correct tool, so the model can learn to recognize the tools.<br></br>
                     Our process for augmenting the dataset involves converting images to grayscale to simplify data by removing unnecessary color dimensions. <br></br> 
                     Followed by resizing to 384x384 to standardize input size for easier training and memory management. <br></br>
-                    Finally, we apply a salt and pepper function to enhance the model's resilience to noisy images, improving its ability to recognize objects across a range of image clarities. This is then followed by a normalization function. <br></br> <br></br>
+                    Finally, we apply a salt and pepper function to enhance the model's resilience to noisy images, improving its ability to recognize objects across a range of image clarities. This is then followed by a normalization function. <br></br>
+                    We ensure that the pixel values are specifically normalized between 0 and 1 using a min-max normalization method because this prevents the domination of certain features and mitigates the effect of outliers in the training process. <br></br> <br></br>
                     The dataset has been split into a training set and a validation set, with 80% of the images being used for training and 20% for validation.<br></br>
                     
                     </p>
