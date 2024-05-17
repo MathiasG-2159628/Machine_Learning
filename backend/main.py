@@ -48,28 +48,29 @@ def read_root(img: Image):
     model = Sequential()
     model.add(Lambda(lambda x: tf.cast(x, tf.float32), input_shape=(height, width, 1)))
 
-    model.add(WeightNormalization(Conv2D(16, (3, 3), padding='same', activation='relu', input_shape=(height, width, 1))))
+    model.add(WeightNormalization(Conv2D(32, (3, 3), padding='same', activation='relu', input_shape=(height, width, 1))))
     model.add(BatchNormalization())
     model.add(MaxPool2D(pool_size=(2, 2)))
-    model.add(Dropout(0.2))
+    # model.add(Dropout(0.2))
 
-    model.add(WeightNormalization(Conv2D(32, (3, 3), padding='same', activation='relu')))
+    model.add(WeightNormalization(Conv2D(64, (3, 3), padding='same', activation='relu')))
     model.add(BatchNormalization())
     model.add(MaxPool2D(pool_size=(2, 2)))
-    model.add(Dropout(0.2))
+    # model.add(Dropout(0.2))
 
-    # model.add(WeightNormalization(Conv2D(64, (3, 3), padding='same', activation='relu')))
-    # model.add(BatchNormalization())
-    # model.add(MaxPool2D(pool_size=(2, 2)))
+    model.add(WeightNormalization(Conv2D(64, (3, 3), padding='same', activation='relu')))
+    model.add(BatchNormalization())
+    model.add(MaxPool2D(pool_size=(2, 2)))
     # model.add(Dropout(0.2))
 
 
 
     model.add(Flatten())
-    model.add(Dense(256, activation='relu'))
+    model.add(Dense(384, activation='relu'))
     model.add(Dropout(0.2))
-    model.add(Dense(128, activation='relu'))
-    model.add(Dropout(0.2))
+
+    #model.add(Dense(128, activation='relu'))
+    # model.add(Dropout(0.2))
 
 
 
@@ -77,7 +78,7 @@ def read_root(img: Image):
 
 
     # model = models.load_model('./model.h5')
-    model.load_weights('./model_30_weights.h5')
+    model.load_weights('./model_9_weights.h5')
     
     prediction = model.predict(image_normalized.reshape(1, width, height, 1))
 
