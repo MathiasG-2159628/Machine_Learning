@@ -41,7 +41,7 @@ export function Dataset_ClassifierDetails() {
                     Finally, we have an output layer with 4 nodes, one for each tool of our classification.<br></br> <br></br>
                     We cap our training at a maximum of 800 epochs. However, we've integrated an early stopping mechanism that halts training if the loss function doesn't improve within 10 epochs.<br></br>
                     This strategy optimizes training time and prevents unnecessary computation. <br></br>
-                    To efficiently utilize our graphical processing unit (GPU) memory, we've chosen batch sizes of 50.<br></br>
+                    In order to not overload the memory of our available graphical processing unit (GPU) during the training process, we've chosen a batch size of 50.<br></br>
                     </p>
                     
                     <img className="mx-4 mt-4" src="CNN.png" alt="Image of model"></img>
